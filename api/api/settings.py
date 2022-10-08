@@ -18,7 +18,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'phonenumbers',
-    'profile_user.apps.ProfileUserConfig'
+    'rest_framework',
+    'rest_framework.authtoken',
+    'profile_user.apps.ProfileUserConfig',
+    'djoser'
 ]
 
 MIDDLEWARE = [
@@ -51,14 +54,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -75,7 +76,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'ru-en'
 
 TIME_ZONE = 'UTC'
@@ -86,8 +86,27 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'username',# поле для входа
+    'USER_ID_FIELD': 'id',  # имя уникального поля в модели пользователя
+    'SEND_ACTIVATION_EMAIL': False,
+    'HIDE_USERS': True,
+    'PERMISSIONS': {
+        'user_list': ['rest_framework.permissions.AllowAny'],
+    }
+}

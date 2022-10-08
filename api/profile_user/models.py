@@ -14,7 +14,7 @@ class Category(models.Model):
 
     name = models.CharField(
         max_length=256, unique=True, verbose_name='Название '
-                                                             'категории'
+                                                  'категории'
     )
     slug = models.SlugField(
         max_length=50, unique=True, verbose_name='slug категории'
@@ -32,22 +32,23 @@ class Category(models.Model):
 class Profile(models.Model):
     """Модель для определения профайла."""
 
-    name = models.CharField(max_length=100, verbose_name='Имя пользователя')
+    author = models.OneToOneField(User, on_delete=models.CASCADE,
+                                  verbose_name='Владелец профайла',
+                                  related_name='profiles',
+                                  null=True)
 
     phone = PhoneNumberField(null=False, unique=True)
-    image = models.ImageField(verbose_name='Изображение')
+    image = models.ImageField(blank=True, verbose_name='Изображение')
 
     description = models.TextField(
         blank=True, verbose_name='Описание анкеты'
     )
 
     year = models.PositiveSmallIntegerField(
-        db_index=True, validators=[MaxValueValidator(date.today().year)],
-        verbose_name='Год рождения'
+        db_index=True, validators=[MaxValueValidator(date.today().year - 18)],
+        verbose_name='Год рождения',
     )
-    description = models.TextField(
-        blank=True, verbose_name='описание произведения'
-    )
+
     category = models.ForeignKey(
         Category, blank=True, null=True,
         on_delete=models.SET_NULL,
@@ -56,7 +57,7 @@ class Profile(models.Model):
     )
 
     class Meta:
-        ordering = ('category', 'name')
+        ordering = ('category', 'author')
         verbose_name = 'Профайл'
         verbose_name_plural = 'Профайлы'
 
