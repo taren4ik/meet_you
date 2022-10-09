@@ -35,7 +35,7 @@ class Profile(models.Model):
     author = models.OneToOneField(User, on_delete=models.CASCADE,
                                   verbose_name='Владелец профайла',
                                   related_name='profiles',
-                                  null=True)
+                                  null=True,)
 
     phone = PhoneNumberField(null=False, unique=True)
     image = models.ImageField(blank=True, verbose_name='Изображение')
@@ -62,7 +62,7 @@ class Profile(models.Model):
         verbose_name_plural = 'Профайлы'
 
     def __str__(self):
-        return f'Name {self.name}, phone: {self.phone}, born: {self.year}'
+        return f'Name {self.author}, phone: {self.phone}, born: {self.year}'
 
 
 class Follow(models.Model):
