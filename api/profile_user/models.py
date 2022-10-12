@@ -5,6 +5,12 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 
 from phonenumber_field.modelfields import PhoneNumberField
+CHOICES = (
+    ('Vladivostok', 'Владивосток'),
+    ('Artem', 'Артем'),
+    ('Nakhodka', 'Находка'),
+
+)
 
 User = get_user_model()
 
@@ -48,6 +54,9 @@ class Profile(models.Model):
         db_index=True, validators=[MaxValueValidator(date.today().year - 18)],
         verbose_name='Год рождения',
     )
+
+    city = models.CharField(max_length=16, choices=CHOICES,
+                            default='Vladivostok')
 
     category = models.ForeignKey(
         Category, blank=True, null=True,
