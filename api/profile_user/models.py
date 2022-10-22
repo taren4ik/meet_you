@@ -5,6 +5,7 @@ from django.core.validators import MaxValueValidator
 from django.db import models
 
 from phonenumber_field.modelfields import PhoneNumberField
+
 CHOICES = (
     ('Vladivostok', 'Владивосток'),
     ('Artem', 'Артем'),
@@ -12,6 +13,10 @@ CHOICES = (
 
 )
 
+CHOICES_SEX = (
+    ('M', 'Male'),
+    ('Ж', 'Female'),
+)
 User = get_user_model()
 
 
@@ -41,7 +46,7 @@ class Profile(models.Model):
     author = models.OneToOneField(User, on_delete=models.CASCADE,
                                   verbose_name='Владелец профайла',
                                   related_name='profiles',
-                                  null=True,)
+                                  null=True, )
 
     phone = PhoneNumberField(null=False, unique=True)
     image = models.ImageField(blank=True, verbose_name='Изображение')
@@ -57,6 +62,9 @@ class Profile(models.Model):
 
     city = models.CharField(max_length=16, choices=CHOICES,
                             default='Vladivostok')
+
+    sex = models.CharField(max_length=1, choices=CHOICES_SEX,
+                           default='Male')
 
     category = models.ForeignKey(
         Category, blank=True, null=True,
@@ -125,4 +133,4 @@ class Comment(models.Model):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self):
-        return f'Comment(pk={self.pk}, text={self.text}, group={self.author})'
+        return f'Comment(pk={self.pk}, text={self.text}, author={self.author})'
