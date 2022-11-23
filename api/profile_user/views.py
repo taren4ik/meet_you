@@ -6,9 +6,32 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status
 
-from .models import Profile
+from .models import  Profile
 from .serializers import ProfileSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
+
+
+# class CategoryViewSet(viewsets.ModelViewSet):
+#     permission_classes = []
+#     queryset = Category.objects.all()
+#     serializer_class = ProfileSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    """Добавление и удаление комментария."""
+
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        profile_id = self.kwargs.get('post_id')
+        profile = get_object_or_404(Profile, id=profile_id)
+        return profile.comments.all()
+
+    def perform_create(self, serializer):
+        profile_id = self.kwargs.get('post_id')
+        profile = get_object_or_404(Profile, id=profile_id)
+        serializer.save(author=self.request.user, profile=profile)
 
 
 class ProfileAPIView(APIView):
@@ -32,19 +55,7 @@ class ProfileAPIDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProfileSerializer
     permission_classes = (IsOwnerOrReadOnly,)
 
-
-class CommentViewSet(viewsets.ModelViewSet):
-    """Добавление и удаление комментария."""
-
-    serializer_class = CommentSerializer
-    permission_classes = []
-
-    def get_queryset(self):
-        profile_id = self.kwargs.get('post_id')
-        profile = get_object_or_404(Profile, id=profile_id)
-        return profile.comments.all()
-
-    def perform_create(self, serializer):
-        profile_id = self.kwargs.get('post_id')
-        profile = get_object_or_404(Profile, id=profile_id)
-        serializer.save(author=self.request.user, profile=profile)
+# class ProfileViewSet(viewsets.ModelViewSet):
+#     permission_classes = []
+#     queryset = Profile.objects.all()
+#     serializer_class = ProfileSerializer

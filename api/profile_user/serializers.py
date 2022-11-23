@@ -2,13 +2,22 @@ import datetime as dt
 
 from rest_framework import serializers
 
-from .models import Comment, User, Profile
+from .models import  Comment, User, Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     """ Сериализатор модели профайла. """
 
     age = serializers.SerializerMethodField()
+
+    # comments = serializers.SlugRelatedField(
+    #     slug_field='author',
+    #     queryset=User.objects.all(),
+    # )
+    # category = serializers.SlugRelatedField(
+    #     slug_field='category',
+    #     queryset=Category.objects.all(),
+    # )
 
     author = serializers.SlugRelatedField(
         slug_field='username',
@@ -18,7 +27,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('id', 'author', 'phone', 'year', 'age', 'sex', 'image',
-                  'description', 'category', 'city',
+                  'description', 'category', 'city', 'comments'
                   )
 
     def get_age(self, obj):
@@ -36,3 +45,11 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+
+# class CategorySerializer(serializers.ModelSerializer):
+#     """ Сериализатор модели категории. """
+#
+#     class Meta:
+#         model = Category
+#         fields = '__all__'

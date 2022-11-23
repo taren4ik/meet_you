@@ -114,7 +114,7 @@ class Follow(models.Model):
 
 
 class Comment(models.Model):
-    """Модель для определения профайла."""
+    """Модель для определения комментария."""
 
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='comments'

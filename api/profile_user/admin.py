@@ -11,6 +11,7 @@ class ProfileAdmin(admin.ModelAdmin):
     # Добавляем возможность фильтрации по дате
     list_filter = ('phone', 'author',)
 
+
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Follow)
 admin.site.register(Category)
