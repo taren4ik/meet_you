@@ -4,12 +4,24 @@ from rest_framework import serializers
 
 from .models import Comment, User, Profile
 
+class CommentSerializer(serializers.ModelSerializer):
+    """ Сериализатор модели профайла. """
+
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
 
 class ProfileSerializer(serializers.ModelSerializer):
     """ Сериализатор модели профайла. """
 
     age = serializers.SerializerMethodField()
-
+    comments = CommentSerializer(read_only=True, many=True)
     # comments = serializers.SlugRelatedField(
     #     slug_field='author',
     #     queryset=User.objects.all(),
@@ -34,17 +46,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         return dt.datetime.now().year - obj.year
 
 
-class CommentSerializer(serializers.ModelSerializer):
-    """ Сериализатор модели профайла. """
 
-    author = serializers.SlugRelatedField(
-        slug_field='username',
-        read_only=True
-    )
-
-    class Meta:
-        model = Comment
-        fields = '__all__'
 
 
 # class CategorySerializer(serializers.ModelSerializer):
