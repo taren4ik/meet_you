@@ -117,14 +117,20 @@ class Comment(models.Model):
     """Модель для определения комментария."""
 
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='comments'
+        User, on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Автор'
     )
     profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='comments'
+        Profile, on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Профайл',
     )
-    text = models.TextField(max_length=2000)
+    text = models.TextField(
+        max_length=2000,
+        verbose_name='Текст комментария',)
     created = models.DateTimeField(
-        'Дата добавления', auto_now_add=True, db_index=True
+        verbose_name='Дата добавления', auto_now_add=True, db_index=True
     )
 
     class Meta:

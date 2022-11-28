@@ -24,12 +24,12 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        profile_id = self.kwargs.get('post_id')
+        profile_id = self.kwargs.get('profile_id')
         profile = get_object_or_404(Profile, id=profile_id)
         return profile.comments.all()
 
     def perform_create(self, serializer):
-        profile_id = self.kwargs.get('post_id')
+        profile_id = self.kwargs.get('profile_id')
         profile = get_object_or_404(Profile, id=profile_id)
         serializer.save(author=self.request.user, profile=profile)
 

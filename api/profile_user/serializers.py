@@ -2,7 +2,7 @@ import datetime as dt
 
 from rest_framework import serializers
 
-from .models import  Comment, User, Profile
+from .models import Comment, User, Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
